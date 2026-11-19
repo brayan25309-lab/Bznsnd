@@ -18,14 +18,14 @@
         h1 { font-size: 1.2rem; color: var(--accent); }
         .container { padding: 1rem; max-width: 600px; margin: 0 auto; }
         .search { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-        input { flex: 1; padding: 0.7rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); }
+        input { flex: 1; padding: 0.7rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); outline: none; }
         button { background: var(--accent); color: white; border: none; padding: 0.7rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         .card { background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); padding: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem; cursor: pointer; }
         .card h3 { font-size: 0.95rem; }
         .card p { font-size: 0.8rem; opacity: 0.8; }
         nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 0.8rem; z-index: 10; }
-        nav button { background: none; color: var(--text); font-size: 0.9rem; }
+        nav button { background: none; color: var(--text); font-size: 0.9rem; border: none; cursor: pointer; }
         .player-box { background: var(--card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-top: 1rem; text-align: center; }
         video { width: 100%; border-radius: 6px; background: black; max-height: 250px; margin: 0.5rem 0; }
     </style>
@@ -85,14 +85,15 @@
                 <div class="card" onclick="reproducir(${a.id})">
                     <h3>${a.title}</h3>
                     <p>${a.genre} • ${a.eps} Eps</p>
-                    <button style="font-size:0.8rem; padding:0.4rem;">Ver Capítulos</button>
+                    <button style="font-size:0.8rem; padding:0.4rem; pointer-events: none;">Ver Capítulos</button>
                 </div>
             `).join('');
         }
 
         function buscar() {
-            const val = document.getElementById('q').value.toLowerCase();
-            render(lista.filter(x => x.title.toLowerCase().includes(val) || x.genre.toLowerCase().includes(val)));
+            const inputVal = document.getElementById('q').value.toLowerCase();
+            const filtrados = lista.filter(x => x.title.toLowerCase().includes(inputVal) || x.genre.toLowerCase().includes(inputVal));
+            render(filtrados);
         }
 
         function reproducir(id) {
@@ -125,10 +126,8 @@
             alert(`📊 Tu Progreso en el Celular:\n- Capítulos vistos: ${datos.caps}\n- Tiempo invertido: ${datos.mins} minutos`);
         }
 
-        // Ejecutar el renderizado una vez que el DOM esté completamente cargado
-        document.addEventListener('DOMContentLoaded', () => {
-            render(lista);
-        });
+        // Forzar la ejecución inmediata al cargar el script por completo
+        render(lista);
     </script>
 </body>
 </html>
